@@ -34,14 +34,21 @@ function getToday() {
   return today;
 }
 
+function equalsType(value, expected) {
+  return expected === Object.prototype.toString.call(value).slice(8, -1);
+}
+
 function isNextTweet(today, row) {
-  // TODO 空文字などの考慮
-  // if (!row[COL_DATE].trim() || !row[COL_TWEET].trim()) {
-  //   return false;
-  // }
-  //
-  var eventDate = new Date(row[COL_DATE]);
+  var inputDate = row[COL_DATE];
+  if (!inputDate || !equalsType(inputDate, 'Date')) {
+    return false;
+  }
+
+  var eventDate = new Date(inputDate);
   if (eventDate.getTime() < today.getTime()) {
+    return false;
+  }
+  if (!row[COL_TWEET].trim()) {
     return false;
   }
   if (row[COL_STATUS] !== STATUS_READY) {
