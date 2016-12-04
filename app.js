@@ -4,16 +4,19 @@ var COL_STATUS = 2;
 var STATUS_READY = 0;
 var STATUS_DONE  = 1;
 
+var SHEET_RANGE = 'A2:C150';
+
 function main() {
   var tweet = getNextTweet();
   Logger.log(tweet);
   //postTweet(tweet);
+  // TODO setValue(1)
 }
 
 function getNextTweet() {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('reserve');
   // 100イベントより多めに一応取っておく
-  var rows  = sheet.getRange('A2:C150').getValues();
+  var rows  = sheet.getRange(SHEET_RANGE).getValues();
 
   // rowsからfindを呼べないので愚直に
   var today = getToday();
@@ -57,9 +60,12 @@ function isNextTweet(today, row) {
   return true;
 }
 
-// TODO
 function resetPostStatus() {
-  // 1日1回
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('reserve');
+  var rows  = sheet.getRange(SHEET_RANGE).getValues();
+  for (var i = 0; i < rows.length; ++i) {
+    sheet.getRange(i + 1, 3).setValue(0); // C列を更新
+  }
 }
 
 
