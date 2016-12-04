@@ -10,7 +10,6 @@ function main() {
   var tweet = getNextTweet();
   Logger.log(tweet);
   //postTweet(tweet);
-  // TODO setValue(1)
 }
 
 function getNextTweet() {
@@ -23,6 +22,8 @@ function getNextTweet() {
   for (var i = 0; i < rows.length; ++i) {
     var row = rows[i];
     if (isNextTweet(today, row)) {
+      // A2から始まっているのとヘッダー行で +2
+      sheet.getRange(i + 2, 3).setValue(1);
       return row[COL_TWEET];
     }
   }
