@@ -8,8 +8,8 @@ var SHEET_RANGE = 'A2:C150';
 
 function main() {
   var tweet = getNextTweet();
-  Logger.log(tweet);
-  //postTweet(tweet);
+  // Logger.log(tweet);
+  postTweet(tweet);
 }
 
 function getNextTweet() {
@@ -22,8 +22,9 @@ function getNextTweet() {
   for (var i = 0; i < rows.length; ++i) {
     var row = rows[i];
     if (isNextTweet(today, row)) {
-      // A2から始まっているのとヘッダー行で +2
-      sheet.getRange(i + 2, 3).setValue(1);
+      // row: A2から始まっているのとヘッダー行で +2
+      // col: getRangeのcol指定はA列が1なので+1
+      sheet.getRange(i + 2, COL_STATUS + 1).setValue(1);
       return row[COL_TWEET];
     }
   }
@@ -65,7 +66,8 @@ function resetPostStatus() {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('reserve');
   var rows  = sheet.getRange(SHEET_RANGE).getValues();
   for (var i = 0; i < rows.length; ++i) {
-    sheet.getRange(i + 1, 3).setValue(0); // C列を更新
+    // col: getRangeのcol指定はA列が1なので+1
+    sheet.getRange(i + 1, COL_STATUS + 1).setValue(0);
   }
 }
 
