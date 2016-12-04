@@ -6,7 +6,8 @@ var STATUS_DONE  = 1;
 
 function main() {
   var tweet = getNextTweet();
-  postTweets(tweet);
+  Logger.log(tweet);
+  //postTweet(tweet);
 }
 
 function getNextTweet() {
@@ -50,11 +51,38 @@ function isNextTweet(today, row) {
 }
 
 // TODO
-function postTweets(tweet) {
-  Logger.log(tweet);
-}
-
-// TODO
 function resetPostStatus() {
   // 1日1回
+}
+
+
+// http://yoshiyuki-hirano.hatenablog.jp/entry/2015/10/13/010317
+// OAuth1認証用インスタンス
+var twitter = TwitterWebService.getInstance(
+  '',
+  ''
+);
+
+// 認証を行う(必須)
+function authorize() {
+  twitter.authorize();
+}
+
+// 認証後のコールバック(必須)
+function authCallback(request) {
+  return twitter.authCallback(request);
+}
+
+// 認証をリセット
+function reset() {
+  twitter.reset();
+}
+
+function postTweet(tweet) {
+  var service  = twitter.getService();
+  var response = service.fetch('https://api.twitter.com/1.1/statuses/update.json', {
+    method: 'post',
+    payload: { status: tweet }
+  });
+  Logger.log(JSON.parse(response));
 }
