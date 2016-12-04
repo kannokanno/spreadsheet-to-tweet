@@ -51,7 +51,7 @@ function isNextTweet(today, row) {
   if (!row[COL_TWEET].trim()) {
     return false;
   }
-  if (row[COL_STATUS] !== STATUS_READY) {
+  if ((row[COL_STATUS] !== STATUS_READY) && (row[COL_STATUS] !== '')) { // 新規追加した時は未入力があり得るので空文字は許容する
     return false;
   }
   return true;
