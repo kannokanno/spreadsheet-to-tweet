@@ -7,9 +7,17 @@ var STATUS_DONE  = 1;
 var SHEET_RANGE = 'A2:C150';
 
 function main() {
+  if (cannotTweet()) {
+    return;
+  }
   var tweet = getNextTweet();
   // Logger.log(tweet);
   postTweet(tweet);
+}
+
+function cannotTweet() {
+  var now = new Date();
+  return now.getHours() < 12;
 }
 
 function getNextTweet() {
@@ -95,6 +103,10 @@ function reset() {
 }
 
 function postTweet(tweet) {
+  if (!tweet) {
+    return;
+  }
+
   var service  = twitter.getService();
   var response = service.fetch('https://api.twitter.com/1.1/statuses/update.json', {
     method: 'post',
